@@ -1,6 +1,5 @@
 package stocks;
 
-import java.sql.Date;
 
 public class StockData {
     private String symbol;
