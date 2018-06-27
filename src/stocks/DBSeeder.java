@@ -8,6 +8,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class DBSeeder {
@@ -33,12 +35,17 @@ public class DBSeeder {
         } catch (SQLException e) {
             e.printStackTrace();
             return 3;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return 7;
         }
 
     }
 
-    public static int seedDb(Connection conn, List<StockData> data) throws SQLException {
+    public static int seedDb(Connection conn, List<StockData> data) throws SQLException, ParseException {
         String insertQuery = "INSERT INTO stocks (symbol, price, volume, date) values(?, ?, ?, ?)";
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
         for (StockData datum : data) {
             try {
@@ -46,7 +53,7 @@ public class DBSeeder {
                 stmt.setString(1, datum.getSymbol());
                 stmt.setDouble(2, datum.getPrice());
                 stmt.setInt(3, datum.getVolume());
-                stmt.setDate(4, datum.getDate());
+                stmt.setTimestamp(4, new Timestamp(formatter.parse(datum.getDate().replace("T", " ")).getTime()));
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();

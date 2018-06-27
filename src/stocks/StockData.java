@@ -6,9 +6,9 @@ public class StockData {
     private String symbol;
     private double price;
     private int volume;
-    private Date date;
+    private String date;
 
-    public StockData(String symbol, double price, int volume, Date date) {
+    public StockData(String symbol, double price, int volume, String date) {
         this.symbol = symbol;
         this.price = price;
         this.volume = volume;
@@ -42,11 +42,11 @@ public class StockData {
         this.volume = volume;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 }
