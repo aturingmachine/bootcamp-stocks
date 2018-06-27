@@ -47,6 +47,7 @@ public class DBSeeder {
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
+        System.out.println("Beginning Data Load..");
         for (StockData datum : data) {
             try {
                 PreparedStatement stmt = conn.prepareStatement(insertQuery);
@@ -60,6 +61,7 @@ public class DBSeeder {
                 return 4;
             }
         }
+        System.out.println("Data Load Finished.");
 
         return 0;
     }
@@ -70,19 +72,17 @@ public class DBSeeder {
                 "symbol varchar(4) not null, price float not null, volume int not null, " +
                 "date timestamp not null, primary key (id) );";
 
-        Statement dropStmt = null;
+        Statement stmt = null;
         try {
-            dropStmt = conn.createStatement();
-            dropStmt.executeUpdate(dropString);
+            stmt = conn.createStatement();
+            stmt.executeUpdate(dropString);
         } catch (SQLException e) {
             e.printStackTrace();
             return 5;
         }
-
-        Statement createStmt = null;
         try {
-            createStmt = conn.createStatement();
-            dropStmt.executeUpdate(createString);
+            stmt = conn.createStatement();
+            stmt.executeUpdate(createString);
         } catch (SQLException e) {
             e.printStackTrace();
             return 6;
