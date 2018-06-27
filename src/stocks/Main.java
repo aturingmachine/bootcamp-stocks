@@ -2,6 +2,7 @@ package stocks;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Main {
 
@@ -24,6 +25,19 @@ public class Main {
                     int seedCode = DBSeeder.getDataFromUrl(conn, "file:///Users/vincentblom/Desktop/week1-stocks.json");
                     System.out.println("DB Seeder - Exit Code: " + seedCode);
                 }
+
+                Scanner sc = new Scanner(System.in);
+                String func = "";
+                int funcExit = 0;
+
+                while (!func.equals("exit") && funcExit == 0) {
+                    System.out.println("Enter A Function (high, low, volume) or exit to quit:");
+                    func = sc.nextLine();
+                    funcExit = Executor.runFunc(func, conn);
+                }
+
+
+
             }
 
             //Close the DB Connection

@@ -10,11 +10,14 @@ public class DBConnection {
         Connection conn = null;
 
         try {
+            System.out.println("DB Connection Attempting...");
             conn = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/stocks?serverTimezone=UTC&useSSL=false", "root", "Sempervic95");
+                    "jdbc:mysql://localhost:3306/stocks?serverTimezone=UTC&useSSL=false&allowPublicKeyRetrieval=true",
+                    "root",
+                    "Sempervic95");
             return conn;
         } catch (SQLException e) {
-            System.err.println(e);
+            e.printStackTrace();
         }
 
         return null;
