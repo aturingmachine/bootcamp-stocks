@@ -48,9 +48,9 @@ public class DBSeeder {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ");
 
         System.out.println("Beginning Data Load..");
+        PreparedStatement stmt = conn.prepareStatement(insertQuery);
         for (StockData datum : data) {
             try {
-                PreparedStatement stmt = conn.prepareStatement(insertQuery);
                 stmt.setString(1, datum.getSymbol());
                 stmt.setDouble(2, datum.getPrice());
                 stmt.setInt(3, datum.getVolume());
@@ -61,6 +61,8 @@ public class DBSeeder {
                 return 4;
             }
         }
+        stmt.close();
+
         System.out.println("Data Load Finished.");
 
         return 0;
@@ -83,6 +85,7 @@ public class DBSeeder {
         try {
             stmt = conn.createStatement();
             stmt.executeUpdate(createString);
+            stmt.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return 6;
