@@ -29,29 +29,34 @@ public class Main {
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
 
-                Scanner sc = new Scanner(System.in);
-                String symb = "";
-                String date = "";
-                int funcExit = 0;
+                //With the DB loaded we are ready to accept user input!
+                getInput(conn);
 
-                while (!symb.equals("exit") || funcExit == 0) {
-                    System.out.println("Enter A Stock Symbol, or exit to quit:");
-                    symb = sc.nextLine();
-                    if (symb.equals("exit")) {
-                        break;
-                    }
-                    System.out.println("Enter A Date (i.e. 2018-06-26) or Month (i.e. 06): ");
-                    date = sc.nextLine();
-                    funcExit = Executor.runFunc(symb, date, conn);
-                }
+                //Close the DB Connection
+                System.out.println("Closing DB Connection...");
+                conn.close();
+                System.out.println("DB Connection Closed.");
             }
-            //Close the DB Connection
-            System.out.println("Closing DB Connection...");
-            conn.close();
-            System.out.println("DB Connection Closed.");
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+    }
+
+    private static void getInput(Connection conn) {
+        Scanner sc = new Scanner(System.in);
+        String symb = "";
+        String date = "";
+        int funcExit = 0;
+        while (!symb.equals("exit") || funcExit == 0) {
+            System.out.println("Enter A Stock Symbol, or exit to quit:");
+            symb = sc.nextLine();
+            if (symb.equals("exit")) {
+                return;
+            }
+            System.out.println("Enter A Date (i.e. 2018-06-26) or Month (i.e. 06): ");
+            date = sc.nextLine();
+            funcExit = Executor.runFunc(symb, date, conn);
+        }
     }
 }
