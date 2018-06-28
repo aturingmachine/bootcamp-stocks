@@ -9,13 +9,13 @@ public class Executor {
 
     public static int runFunc(String symb, String date, Connection conn) {
         symb = symb.toUpperCase();
-        System.out.println("High For " + symb + " on " + date);
+        System.out.println("High For " + symb + " for " + date);
         runQuery(conn, symb, date, "MAX(price)");
-        System.out.println("Low For " + symb + " on " + date);
+        System.out.println("Low For " + symb + " for " + date);
         runQuery(conn, symb, date, "MIN(price)");
-        System.out.println("Volume Traded for " + symb + " on " + date);
+        System.out.println("Volume Traded for " + symb + " for " + date);
         runQuery(conn, symb, date, "SUM(volume)");
-        System.out.println("Closing Price for " + symb + " on " + date);
+        System.out.println("Closing Price for " + symb + " for " + date);
         closePrice(conn, symb, date);
 
         return 0;
