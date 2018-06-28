@@ -1,3 +1,4 @@
 .idea/
 out/
 libs/
+*.DS_Store

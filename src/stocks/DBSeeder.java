@@ -3,6 +3,8 @@ package stocks;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -14,15 +16,12 @@ import java.util.List;
 
 public class DBSeeder {
 
-    public static int getDataFromUrl (Connection conn, String urlString) {
+    public static int getDataFromFile (Connection conn, String fileString) {
         try {
-            //try and open a connection to the URL provided
-            URL url = new URL(urlString);
-            URLConnection dataConnection =  url.openConnection();
             System.out.println("Reading File From Disk...");
 
             ObjectMapper mapper = new ObjectMapper(); //New up a Jackson Object Mapper
-            List<StockData> data = mapper.readValue(dataConnection.getInputStream(), new TypeReference<List<StockData>>(){});
+            List<StockData> data = mapper.readValue(new File(fileString), new TypeReference<List<StockData>>(){});
 
             return seedDb(conn, data);
 

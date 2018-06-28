@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
+        String f = System.getProperty("user.dir") + "/data/week1-stocks.json";
 
         try {
             //Get a new DB Connection
@@ -22,7 +23,7 @@ public class Main {
                 //If we successfully migrated then we can seed the data from the JSON file
                 if (migrateCode == 0) {
                     System.out.println("Seeding Database...");
-                    int seedCode = DBSeeder.getDataFromUrl(conn, "file:///Users/vincentblom/Desktop/week1-stocks.json");
+                    int seedCode = DBSeeder.getDataFromFile(conn, f);
                     System.out.println("DB Seeder - Exit Code: " + seedCode);
                 }
 
