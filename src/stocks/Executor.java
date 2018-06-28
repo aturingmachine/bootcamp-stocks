@@ -8,38 +8,27 @@ import java.util.Scanner;
 
 public class Executor {
 
-    public static int runFunc(String funcName, Connection conn) {
-        switch (funcName) {
-            case "high":
-                return runQuery(conn, "MAX(price)");
-            case "low":
-                return runQuery(conn, "MIN(price)");
-            case "volume":
-                return runQuery(conn, "SUM(volume)");
-
-            default:
-                System.out.println("That function isn't supported!");
-        }
+    public static int runFunc(String symb, String date, Connection conn) {
+        symb = symb.toUpperCase();
+        System.out.println("High For " + symb + " on " + date);
+        runQuery(conn, symb, date, "MAX(price)");
+        System.out.println("Low For " + symb + " on " + date);
+        runQuery(conn, symb, date, "MIN(price)");
+        System.out.println("Volume Traded for " + symb + " on " + date);
+        runQuery(conn, symb, date, "SUM(volume)");
+        System.out.println("Closing Price for " + symb + " on " + date);
+        closePrice(conn, symb, date);
 
         return 0;
     }
 
-    private static int runQuery(Connection conn, String type) {
+    private static int runQuery(Connection conn, String symb, String date, String type) {
         String queryString = "select [TYPE] from stocks where date like '[DATE]%' and symbol = '[SYMBOL]';";
-        Scanner sc = new Scanner(System.in);
-
-        //Get Stock symbol as well as the date we want
-        System.out.println("Enter A Stock Symbol (i.e. AMZN): ");
-        String symbol = sc.nextLine().toUpperCase();
-        System.out.println("Enter A Date (i.e 2018-06-26): ");
-        String date = sc.nextLine();
 
         //Fill out the query with the user provided variables
         queryString = queryString.replace("[DATE]", date);
-        queryString = queryString.replace("[SYMBOL]", symbol);
+        queryString = queryString.replace("[SYMBOL]", symb);
         queryString = queryString.replace("[TYPE]", type);
-
-        sc.close();
 
         try {
             Statement stmt = conn.createStatement();
@@ -60,6 +49,30 @@ public class Executor {
         } catch (SQLException e) {
             e.printStackTrace();
             return 8;
+        }
+    }
+
+    private static int closePrice(Connection conn, String symb, String date)  {
+        String queryString = "select price from stocks where symbol = '[SYM]' " +
+                "and date = (select max(date) from stocks where symbol = '[SYM]');";
+
+        queryString = queryString.replace("[SYM]", symb);
+
+        try {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(queryString);
+
+            //If we have a thing in the set (which we should)
+            if (rs.next()) {
+                    System.out.format("%.2f", rs.getDouble(1)); //This needs to be formatted
+                    System.out.println();
+            }
+            rs.close();
+            return 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 9;
         }
     }
 }

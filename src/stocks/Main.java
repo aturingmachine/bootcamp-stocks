@@ -27,13 +27,19 @@ public class Main {
                 }
 
                 Scanner sc = new Scanner(System.in);
-                String func = "";
+                String symb = "";
+                String date = "";
                 int funcExit = 0;
 
-                while (!func.equals("exit") && funcExit == 0) {
-                    System.out.println("Enter A Function (high, low, volume) or exit to quit:");
-                    func = sc.nextLine();
-                    funcExit = Executor.runFunc(func, conn);
+                while (!symb.equals("exit") || funcExit == 0) {
+                    System.out.println("Enter A Stock Symbol, or exit to quit:");
+                    symb = sc.nextLine();
+                    if (symb.equals("exit")) {
+                        break;
+                    }
+                    System.out.println("Enter A Date: ");
+                    date = sc.nextLine();
+                    funcExit = Executor.runFunc(symb, date, conn);
                 }
 
 
