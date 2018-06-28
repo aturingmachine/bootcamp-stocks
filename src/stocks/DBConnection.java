@@ -9,8 +9,6 @@ public class DBConnection {
     public static Connection conn;
 
     private static Connection makeConn() throws SQLException {
-        Connection conn = null;
-
         try {
             System.out.println("DB Connection Attempting...");
             conn = DriverManager.getConnection(
