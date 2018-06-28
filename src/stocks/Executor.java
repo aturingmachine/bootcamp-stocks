@@ -52,6 +52,8 @@ public class Executor {
         }
     }
 
+    //I made this method after the other 3 so I couldnt really figure out how to
+    //extend that one. So we get this...
     private static int closePrice(Connection conn, String symb, String date)  {
         String queryString = "select price from stocks where symbol = '[SYM]' " +
                 "and date = (select max(date) from stocks where symbol = '[SYM]');";

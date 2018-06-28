@@ -6,7 +6,9 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
-    public static Connection getConnection() throws SQLException {
+    public static Connection conn;
+
+    private static Connection makeConn() throws SQLException {
         Connection conn = null;
 
         try {
@@ -21,6 +23,14 @@ public class DBConnection {
         }
 
         return null;
+    }
+
+    public static Connection getConn() throws SQLException {
+        if (conn == null) {
+            return makeConn();
+        } else {
+            return conn;
+        }
     }
 
 }

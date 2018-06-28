@@ -10,7 +10,7 @@ public class Main {
 
         try {
             //Get a new DB Connection
-            Connection conn = DBConnection.getConnection();
+            Connection conn = DBConnection.getConn();
             if (conn != null) {
                 System.out.println("Connected");
 
