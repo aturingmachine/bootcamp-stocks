@@ -87,6 +87,7 @@ public class DBSeeder {
             return 6;
         }
 
+        System.out.println("Database Refreshed.");
         return 0;
     }
 }

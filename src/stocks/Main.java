@@ -22,14 +22,19 @@ public class Main {
                 //If we successfully migrated then we can seed the data from the JSON file
                 if (migrateCode == 0) {
                     System.out.println("Seeding Database...");
-                    DBSeeder.getDataFromFile(conn, f);
+                    int seedCode = DBSeeder.getDataFromFile(conn, f);
+                    if (seedCode != 0) {
+                        System.exit(seedCode);
+                    }
                 } else {
                     System.exit(migrateCode);
                 }
+
+                //This is supposed to clear the terminal
                 System.out.print("\033[H\033[2J");
                 System.out.flush();
 
-                //With the DB loaded we are ready to accept user input!
+                //With the DB refreshed and loaded we are ready to accept user input!
                 getInput(conn);
 
                 //Close the DB Connection
