@@ -18,14 +18,16 @@ public class Main {
                 //Will run a 'migration' just drops the table if it exists and creates it again
                 System.out.println("Migrating Database...");
                 int migrateCode = DBSeeder.migrateDB(conn);
-                System.out.println("DB Migration - Exit Code: " + migrateCode);
 
                 //If we successfully migrated then we can seed the data from the JSON file
                 if (migrateCode == 0) {
                     System.out.println("Seeding Database...");
-                    int seedCode = DBSeeder.getDataFromFile(conn, f);
-                    System.out.println("DB Seeder - Exit Code: " + seedCode);
+                    DBSeeder.getDataFromFile(conn, f);
+                } else {
+                    System.exit(migrateCode);
                 }
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
 
                 Scanner sc = new Scanner(System.in);
                 String symb = "";
@@ -38,15 +40,11 @@ public class Main {
                     if (symb.equals("exit")) {
                         break;
                     }
-                    System.out.println("Enter A Date: ");
+                    System.out.println("Enter A Date (i.e. 2018-06-26) or Month (i.e. 06): ");
                     date = sc.nextLine();
                     funcExit = Executor.runFunc(symb, date, conn);
                 }
-
-
-
             }
-
             //Close the DB Connection
             System.out.println("Closing DB Connection...");
             conn.close();

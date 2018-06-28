@@ -22,7 +22,7 @@ public class Executor {
     }
 
     private static int runQuery(Connection conn, String symb, String date, String type) {
-        String queryString = "select [TYPE] from stocks where date like '[DATE]%' and symbol = '[SYMBOL]';";
+        String queryString = "select [TYPE] from stocks where date like '%[DATE]%' and symbol = '[SYMBOL]';";
 
         //Fill out the query with the user provided variables
         queryString = queryString.replace("[DATE]", date);
@@ -55,9 +55,10 @@ public class Executor {
     //extend that one. So we get this...
     private static int closePrice(Connection conn, String symb, String date)  {
         String queryString = "select price from stocks where symbol = '[SYM]' " +
-                "and date = (select max(date) from stocks where symbol = '[SYM]');";
+                "and date = (select max(date) from stocks where date like '%[DATE]%' and symbol = '[SYM]');";
 
         queryString = queryString.replace("[SYM]", symb);
+        queryString = queryString.replace("[DATE]", date);
 
         try {
             Statement stmt = conn.createStatement();
