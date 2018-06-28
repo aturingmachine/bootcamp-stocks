@@ -22,7 +22,13 @@ public class Executor {
     }
 
     private static int runQuery(Connection conn, String symb, String date, String type) {
-        String queryString = "select [TYPE] from stocks where date like '%[DATE]%' and symbol = '[SYMBOL]';";
+        String dateString;
+        if (date.length() == 2) {
+            dateString = "'%-[DATE]-%'";
+        } else {
+            dateString = "'[DATE]%'";
+        }
+        String queryString = "select [TYPE] from stocks where date like "+ dateString +" and symbol = '[SYMBOL]';";
 
         //Fill out the query with the user provided variables
         queryString = queryString.replace("[DATE]", date);
@@ -54,8 +60,14 @@ public class Executor {
     //I made this method after the other 3 so I couldnt really figure out how to
     //extend that one. So we get this...
     private static int closePrice(Connection conn, String symb, String date)  {
+        String dateString;
+        if (date.length() == 2) {
+            dateString = "'%-[DATE]-%'";
+        } else {
+            dateString = "'[DATE]%'";
+        }
         String queryString = "select price from stocks where symbol = '[SYM]' " +
-                "and date = (select max(date) from stocks where date like '%[DATE]%' and symbol = '[SYM]');";
+                "and date = (select max(date) from stocks where date like " + dateString + " and symbol = '[SYM]');";
 
         queryString = queryString.replace("[SYM]", symb);
         queryString = queryString.replace("[DATE]", date);
